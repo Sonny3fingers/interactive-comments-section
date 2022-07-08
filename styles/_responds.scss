@@ -1,0 +1,51 @@
+.respond-container {
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 5%;
+  width: 95%;
+  background-color: $white;
+  color: $myGrayishBlue;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1rem;
+    width: 1rem;
+    height: 100%;
+    border-left: 2px solid $lightGray;
+
+    &:last-child {
+      height: 100%;
+    }
+
+    @include breakpoints(tablets) {
+      left: -5%;
+    }
+
+    @include breakpoints(laptops) {
+      left: -6%;
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  @include breakpoints(tablets) {
+    width: 90%;
+    left: 10%;
+  }
+
+  @include breakpoints(laptops) {
+    flex-direction: row;
+    width: 88%;
+    left: 12%;
+    font-size: 1.05rem;
+    line-height: 155%;
+    padding: 1.7rem;
+  }
+}

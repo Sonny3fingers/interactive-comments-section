@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&family=Manrope:wght@800&family=Neucha&family=Poppins:wght@300;500&family=Roboto:wght@300&family=Rubik:wght@400;500;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $veryLightGray;
+  font-family: $fontFamily;
+  font-size: 1.05rem;
+  line-height: 1.5rem;
+  font-weight: $mediumWeight;
+  color: $myGrayishBlue;
+  margin: 0 auto;
+  padding: 0;
+  overflow-x: hidden;
+  // min-width: 320px;
+}
+
+.main {
+  position: relative;
+  background-color: transparent;
+  min-width: 320px;
+  // width: 24.41%;
+  padding: 2rem 1rem;
+  margin: 0 auto;
+
+  @include breakpoints(tablets) {
+    width: 75%;
+  }
+  @include breakpoints(laptops) {
+    width: 65%;
+  }
+  @include breakpoints(desktop) {
+    width: 52.8%;
+  }
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+i {
+  pointer-events: none;
+  color: $moderateBlue;
+}
+
+.flex {
+  display: flex;
+  &-fd-column {
+    flex-direction: column;
+  }
+  &-fd-row {
+    flex-direction: row;
+  }
+  &-jc-c {
+    justify-content: center;
+  }
+  &-jc-start {
+    justify-content: flex-start;
+  }
+  &-jc-end {
+    justify-content: flex-end;
+  }
+  &-jc-sa {
+    justify-content: space-around;
+  }
+  &-ai-start {
+    align-items: flex-start;
+  }
+  &-ai-end {
+    align-items: flex-end;
+  }
+  &-ai-center {
+    align-items: center;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.userName {
+  color: $moderateBlue;
+  position: absolute;
+  top: 2rem;
+  left: 1.5rem;
+}

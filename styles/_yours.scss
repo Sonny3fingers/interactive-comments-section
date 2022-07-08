@@ -1,0 +1,62 @@
+.yours-comments {
+  position: relative;
+  background-color: $white;
+  color: $myGrayishBlue;
+  padding: 1rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+
+  @include breakpoints(laptops) {
+    flex-direction: row;
+    padding: 1.7rem;
+    margin-bottom: 1.2rem;
+    line-height: 155%;
+  }
+
+  .user-info {
+    span:nth-child(3) {
+      background-color: $moderateBlue;
+      color: $white;
+      margin-right: 1rem;
+      padding: 0.1rem;
+      //   height: 1rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.actions {
+  position: absolute;
+  right: 1rem;
+  bottom: 1.75rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: $moderateBlue;
+  font-weight: bold;
+
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: $boldWeight;
+
+    svg {
+      margin-right: 0.3rem;
+    }
+
+    &:first-child {
+      color: #ed6368;
+    }
+    &:last-child {
+      color: $moderateBlue;
+    }
+  }
+
+  @include breakpoints(desktop) {
+    top: 1.65rem;
+    right: 1.1rem;
+    align-self: flex-start;
+    font-size: 1.1rem;
+    height: 2rem;
+    bottom: none;
+  }
+}

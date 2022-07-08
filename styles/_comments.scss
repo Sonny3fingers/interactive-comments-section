@@ -1,0 +1,110 @@
+.comment-container {
+  position: relative;
+  background-color: $white;
+  color: $myGrayishBlue;
+  padding: 1rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+
+  @include breakpoints(laptops) {
+    flex-direction: row;
+    padding: 1.7rem;
+    margin-bottom: 1.2rem;
+    line-height: 155%;
+  }
+}
+
+.wrapper {
+  @include breakpoints(laptops) {
+    padding: 0rem 1.5rem;
+    letter-spacing: -0.2px;
+    font-size: 1.05rem;
+  }
+}
+.user-info {
+  height: 2rem;
+  @include breakpoints(laptops) {
+    height: 2.2rem;
+    font-size: 1.05rem;
+  }
+  .avatar {
+    margin-right: 1rem;
+    img {
+      width: 2rem;
+      height: 2rem;
+
+      @include breakpoints(laptops) {
+        width: 2.2rem;
+        height: 2.2rem;
+      }
+    }
+  }
+  span:nth-child(2) {
+    margin-right: 1rem;
+    color: $darkBlue;
+    font-weight: $boldWeight;
+  }
+}
+
+.scores {
+  background-color: $veryLightGray;
+  color: $moderateBlue;
+  font-weight: $boldWeight;
+  width: 33%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  @include breakpoints(laptops) {
+    flex-direction: column;
+    order: -1;
+    width: 2.6rem;
+    height: 7rem;
+  }
+  span {
+    margin: 0 0.7rem;
+    font-size: 1.1rem;
+    font-weight: $mediumWeight;
+  }
+}
+
+.replyBtn,
+.actions {
+  position: absolute;
+  right: 1rem;
+  bottom: 1.75rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: $moderateBlue;
+  font-weight: bold;
+  i {
+    padding: 0 0.5rem;
+  }
+
+  @include breakpoints(desktop) {
+    top: 1.65rem;
+    right: 1.1rem;
+    align-self: flex-start;
+    font-size: 1.1rem;
+    height: 2rem;
+    bottom: none;
+  }
+}
+
+.actions {
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: $boldWeight;
+
+    svg {
+      margin-right: 0.3rem;
+    }
+
+    &:first-child {
+      color: #ed6368;
+    }
+    &:last-child {
+      color: $moderateBlue;
+    }
+  }
+}

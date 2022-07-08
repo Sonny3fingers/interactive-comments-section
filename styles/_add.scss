@@ -1,0 +1,75 @@
+.add-text {
+  position: relative;
+  background-color: $white;
+  color: $myGrayishBlue;
+  padding: 1rem;
+  border-radius: 0.5rem;
+
+  @include breakpoints(laptops) {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1.7rem;
+  }
+
+  textarea {
+    border: 2px solid $lightGray;
+    height: 6rem;
+    font-family: inherit;
+    font-size: 1rem;
+    color: inherit;
+    padding: 1rem 1.5rem;
+    font-weight: $boldWeight;
+    color: $myGrayishBlue;
+    outline: none;
+    margin-bottom: 1.4rem;
+    border-radius: 0.5rem;
+    &::placeholder {
+      color: $myGrayishBlue;
+      font-weight: $lightWeight;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    @include breakpoints(laptops) {
+      width: 100%;
+      margin-right: 1rem;
+    }
+    @include breakpoints(desktop) {
+      width: 100%;
+    }
+  }
+
+  span {
+    height: 2rem;
+    margin-right: 1rem;
+
+    img {
+      width: 2rem;
+      height: 2rem;
+      @include breakpoints(laptops) {
+        width: 2.2rem;
+        height: 2.2rem;
+      }
+    }
+    @include breakpoints(laptops) {
+      height: 2.2rem;
+      order: -1;
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.6rem;
+    background-color: $moderateBlue;
+    color: $white;
+    text-transform: uppercase;
+    font-weight: $mediumWeight;
+    font-size: 1.05rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: 0.5rem;
+    @include breakpoints(laptops) {
+      position: unset;
+      align-self: flex-start;
+    }
+  }
+}
