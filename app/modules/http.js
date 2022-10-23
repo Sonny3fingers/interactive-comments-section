@@ -8,7 +8,6 @@ class Http {
     const dataReplies = await resReplies.json();
     const resultRespondReplies = await fetch(url4);
     const dataRespondReplies = await resultRespondReplies.json();
-
     return {
       dataUser,
       comments: dataRes,
@@ -49,5 +48,4 @@ class Http {
     return dataRes;
   }
 }
-
 export const http = new Http();
