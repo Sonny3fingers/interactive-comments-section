@@ -1,11 +1,24 @@
 import { http } from "./modules/http.js";
 import { ui } from "./modules/ui.js";
 
+dayjs.extend(window.dayjs_plugin_relativeTime);
+
 const main = document.querySelector(".main");
 let state = "addComment";
+let addTextInput;
+
+// setTimeout(() => {
+//   console.log(document.querySelector(".add-text"));
+//   document.querySelector(".add-text").addEventListener("click", () => {
+//     console.log("Hello");
+//   });
+// }, 1000);
 
 // Add listener for show comments
-document.addEventListener("DOMContentLoaded", getComments);
+document.addEventListener("DOMContentLoaded", () => {
+  getComments();
+});
+
 // Add listener for post comment
 main.addEventListener("click", (e) => postComment(e));
 // Add listener for Reply
@@ -28,144 +41,25 @@ function getComments() {
     )
     .then((data) => {
       data.comments.forEach((comment) => {
-        comment.createdAt = timeCounter(comment.createdAt);
-      });
-      data.replies.forEach((reply) => {
-        reply.createdAt = timeCounter(reply.createdAt);
-      });
-      data.respondReplies.forEach((respondReply) => {
-        respondReply.createdAt = timeCounter(respondReply.createdAt);
+        comment.createdAt = comment.createdAt.includes("ago")
+          ? comment.createdAt
+          : dayjs(new Date(comment.createdAt)).fromNow();
       });
 
+      data.replies.forEach((reply) => {
+        reply.createdAt = reply.createdAt.includes("ago")
+          ? reply.createdAt
+          : dayjs(new Date(reply.createdAt)).fromNow();
+      });
+      data.respondReplies.forEach((respondReply) => {
+        respondReply.createdAt = respondReply.createdAt.includes("ago")
+          ? respondReply.createdAt
+          : dayjs(new Date(respondReply.createdAt)).fromNow();
+      });
       ui.showComments(data);
     })
     .catch((err) => console.log(err));
 }
-
-// Time counter function
-function timeCounter(commentPosted) {
-  // Initialize time ago variable
-  let timeAgo;
-  // Add if statement for preventing saved dates to interfering for each loop
-  if (
-    commentPosted === "1 month ago" ||
-    commentPosted === "2 weeks ago" ||
-    commentPosted === "1 week ago" ||
-    commentPosted === "2 days ago"
-  ) {
-    timeAgo = commentPosted;
-    return timeAgo;
-  } else {
-    // Get time of comment posted date
-    const commentPostedTime = new Date(commentPosted).getTime();
-    // time now
-    const now = new Date().getTime();
-    // gapTime
-    const gapTime = now - commentPostedTime;
-    // time measures
-    const seconds = 1000;
-    const minute = seconds * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-
-    // Calculations
-    const textDay = Math.floor(gapTime / day);
-    const textHour = Math.floor((gapTime % day) / hour);
-    const textMinute = Math.floor((gapTime % hour) / minute);
-
-    let timeAgo;
-
-    if (textDay === 0 && textHour === 0 && textMinute === 0) {
-      timeAgo = "just now";
-    } else if (textDay === 0 && textHour === 0 && textMinute !== 0) {
-      switch (true) {
-        case textMinute === 1:
-          timeAgo = `${textMinute} minute ago`;
-          break;
-        case textMinute === 2:
-          timeAgo = `${textMinute} minute ago`;
-          break;
-        case textMinute === 3:
-          timeAgo = `${textMinute} minute ago`;
-          break;
-        case textMinute <= 5:
-          timeAgo = `${textMinute} minute ago`;
-          break;
-        case textMinute <= 20:
-          timeAgo = `15 minutes ago`;
-          break;
-        case textMinute <= 40:
-          timeAgo = `30 minutes ago`;
-          break;
-        case textMinute <= 59:
-          timeAgo = `1 hour ago`;
-          break;
-
-        default:
-          break;
-      }
-      return timeAgo;
-    } else if (textDay === 0 && textHour !== 0) {
-      switch (true) {
-        case textHour <= 1:
-          timeAgo = `${textHour} hour ago`;
-          break;
-        case textHour <= 22:
-          timeAgo = `${textHour} hours ago`;
-          break;
-        case textHour <= 24:
-          timeAgo = `1 day ago`;
-          break;
-
-        default:
-          break;
-      }
-      return timeAgo;
-    } else if (textDay !== 0) {
-      switch (true) {
-        case textDay <= 1:
-          timeAgo = `${textDay} day ago`;
-          break;
-        case textDay <= 25:
-          timeAgo = `${textDay} days ago`;
-          break;
-        case textDay <= 35:
-          timeAgo = `1 month ago`;
-          break;
-        case textDay <= 60:
-          timeAgo = `2 months ago`;
-          break;
-        case textDay <= 90:
-          timeAgo = `3 months ago`;
-          break;
-        case textDay <= 120:
-          timeAgo = `4 months ago`;
-          break;
-        case textDay <= 150:
-          timeAgo = `5 months ago`;
-          break;
-        case textDay <= 180:
-          timeAgo = `6 months ago`;
-          break;
-        case textDay <= 365:
-          timeAgo = `1 year ago`;
-          break;
-        case textDay <= 720:
-          timeAgo = `2 years ago`;
-          break;
-        case textDay <= 1080:
-          timeAgo = `3 year ago`;
-          break;
-
-        default:
-          break;
-      }
-      return timeAgo;
-    }
-    return timeAgo;
-  }
-}
-
 // Post comment function
 function postComment(e) {
   state = "addComment";
@@ -196,7 +90,6 @@ function postComment(e) {
       },
       replies: [],
     };
-
     // Validate
     if (comment.content === "") {
       alert("Please enter valid comment");
@@ -211,8 +104,7 @@ function postComment(e) {
     }
   }
 }
-
-// Post reply function
+// Post replay function
 function postReply(e) {
   e.preventDefault();
   // for replying check if you clicked reply button on comment
@@ -245,84 +137,66 @@ function postReply(e) {
     cloneAddText.querySelector("button").innerText = "Reply";
     // Get parent element for inserting before
     main.insertBefore(cloneAddText, nextDivEl);
-    // send get request for current user
-    let reply;
-    http
-      .get(
-        "https://json-server-interactive.herokuapp.com/currentUser",
-        "https://json-server-interactive.herokuapp.com/comments",
-        "https://json-server-interactive.herokuapp.com/replies",
-        "https://json-server-interactive.herokuapp.com/respondReplies"
-      )
-      .then((data) => {
-        // Submit button on clone add text
-        cloneAddText.addEventListener("click", (e) => {
-          e.preventDefault();
-          state = "addReply";
-          if (
-            e.target.classList.contains("submitBtn") &&
-            state === "addReply"
-          ) {
-            // get textarea element value
-            const textArea = main.querySelector(".add-text #textArea").value;
-            // reply comment
-            reply = {
-              id: Math.floor(Math.random() * 100),
-              commentId: commentId,
-              content: `${textArea}`,
-              createdAt: `${replyPosted}`,
-              incrementedScore: true,
-              decrementedScore: false,
-              score: 0,
-              user: {
-                image: {
-                  png: `${data.dataUser.image.png}`,
-                  webp: `${data.dataUser.image.webp}`,
-                },
-                username: `${data.dataUser.username}`,
-              },
-              replies: [],
-            };
-            // Validate
-            if (reply.content === `@${userName}`) {
-              alert("Please enter your reply.");
-              return;
-            } else if (isComment) {
-              // data.comments.replies.unshift(replyComment);
-              http
-                .post(
-                  `https://json-server-interactive.herokuapp.com/replies`,
-                  reply
-                )
-                .then(() => {
-                  getComments();
-                })
-                .catch((err) => console.log(err));
-            } else {
-              const { replyId = commentId, ...rest } = reply;
-              console.log(replyId);
-              reply.replyId = replyId;
-              delete reply.commentId;
-              http
-                .post(
-                  `https://json-server-interactive.herokuapp.com/respondReplies`,
-                  reply
-                )
-                .then(() => {
-                  getComments();
-                })
-                .catch((err) => console.log(err));
-            }
-
-            // Remove cloneAddText element
-            e.target.parentElement.remove();
-          }
-        });
-      })
-      .catch((err) => console.log(err));
+    cloneAddText.addEventListener("click", (e) => {
+      e.preventDefault();
+      state = "addReply";
+      if (e.target.classList.contains("submitBtn") && state === "addReply") {
+        // Get text area element value
+        const textArea = main.querySelector(".add-text #textArea").value;
+        // reply comment
+        let reply = {
+          id: Math.floor(Math.random() * 100),
+          commentId: commentId,
+          content: `${textArea}`,
+          createdAt: `${replyPosted}`,
+          incrementedScore: true,
+          decrementedScore: false,
+          score: 0,
+          user: {
+            image: {
+              png: "./images/avatars/image-juliusomo.png",
+              webp: "./images/avatars/image-juliusomo.webp",
+            },
+            username: "juliusomo",
+          },
+          replies: [],
+        };
+        // Validate
+        if (reply.content === `@${userName}`) {
+          alert("Please enter your reply.");
+          return;
+        } else if (isComment) {
+          // data.comments.replies.unshift(replyComment);
+          http
+            .post(
+              `https://json-server-interactive.herokuapp.com/replies`,
+              reply
+            )
+            .then(() => {
+              getComments();
+            })
+            .catch((err) => console.log(err));
+        } else {
+          const { replyId = commentId, ...rest } = reply;
+          reply.replyId = replyId;
+          delete reply.commentId;
+          http
+            .post(
+              `https://json-server-interactive.herokuapp.com/respondReplies`,
+              reply
+            )
+            .then(() => {
+              getComments();
+            })
+            .catch((err) => console.log(err));
+        }
+        // Remove cloneAddText element
+        e.target.parentElement.remove();
+      }
+    });
   }
 }
-
+//  Delete function
 function deleteComment(e) {
   e.preventDefault();
   if (e.target.classList.contains("delete")) {
@@ -418,7 +292,6 @@ function updateComment(e) {
         },
         replies: [],
       };
-
       cloneAddTextDiv.addEventListener("click", (e) => {
         if (
           e.target.classList.contains("submitBtn") &&
