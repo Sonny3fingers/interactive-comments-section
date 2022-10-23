@@ -215,6 +215,7 @@ class UI {
 
     // Add to document body main div element
     document.body.appendChild(this.main);
+    this.addTextInput = document.querySelector(".add-text");
   }
 
   createModalOverlay() {
